@@ -27,20 +27,24 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         mapView = MGLMapView(frame: view.bounds, styleURL: url)
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        mapView.delegate = self
         view.addSubview(mapView)
         view.sendSubview(toBack: mapView)
         configPositionForMapview()
-        LocationServices.shared.start()
+
         pinPosition.title = ""
         pinPosition.subtitle = ""
         mapView.isPitchEnabled = false
         mapView.isRotateEnabled = false
         mapView.addAnnotation(pinPosition)
-        
+        mapView.delegate = nil
         // Define the menus
         let menuLeftNavigationController = UISideMenuNavigationController(rootViewController: MenuViewController())
         SideMenuManager.default.menuLeftNavigationController = menuLeftNavigationController
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        LocationServices.shared.start()
     }
 
     func configPositionForMapview() {
@@ -48,12 +52,17 @@ class ViewController: UIViewController {
             switch event {
                 case .next(let value):
                     if (LocationServices.shared.isUserLocated) {
-                        print(value)
                         DispatchQueue.main.async {
                             self.pinPosition.coordinate = self.mapView.centerCoordinate
-                            self.mapView.setCenter(value.coordinate, zoomLevel: 15.0, animated: true)
+                            self.mapView.setCenter(value.coordinate, zoomLevel: 10.0, animated: true)
+                            self.mapView.delegate = self
                         }
                         LocationServices.shared.isUserLocated = false
+                    } else {
+                        DispatchQueue.main.async {
+                            self.pinPosition.coordinate = self.mapView.centerCoordinate
+                            self.mapView.delegate = self
+                        }
                     }
                     LocationServices.shared.getAdress()
                 case .error(let error):
@@ -108,12 +117,6 @@ extension ViewController: MGLMapViewDelegate {
     func mapViewRegionIsChanging(_ mapView: MGLMapView) {
         DispatchQueue.main.async {
             self.pinPosition.coordinate = mapView.centerCoordinate
-        }
-    }
-
-    func mapView(_ mapView: MGLMapView, regionWillChangeAnimated animated: Bool) {
-        DispatchQueue.main.async {
-            self.addressTF.text = "..."
         }
     }
     
