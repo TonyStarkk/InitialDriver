@@ -16,26 +16,16 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var addressTF: UITextField!
     
-    let url = URL(string: "mapbox://styles/mapbox/streets-v10")
     let currentPosition = LocationServices.shared.position.asObservable()
     let addressPosition = LocationServices.shared.address.asObservable()
     let disposeBag = DisposeBag()
-    var mapView: MGLMapView!
-    var pinPosition = MGLPointAnnotation()
+    var mapView: MapView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        mapView = MGLMapView(frame: view.bounds, styleURL: url)
-        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        view.addSubview(mapView)
-        view.sendSubview(toBack: mapView)
+        mapView = MapViewBox(frame: view.bounds)
+        view.insertSubview(mapView, at: 0)
         configPositionForMapview()
-
-        pinPosition.title = ""
-        pinPosition.subtitle = ""
-        mapView.isPitchEnabled = false
-        mapView.isRotateEnabled = false
-        mapView.addAnnotation(pinPosition)
         mapView.delegate = nil
         // Define the menus
         let menuLeftNavigationController = UISideMenuNavigationController(rootViewController: MenuViewController())
@@ -46,21 +36,19 @@ class ViewController: UIViewController {
         super.viewDidAppear(animated)
         LocationServices.shared.start()
     }
-
+    
     func configPositionForMapview() {
         currentPosition.subscribe { (event) in
             switch event {
                 case .next(let value):
                     if (LocationServices.shared.isUserLocated) {
                         DispatchQueue.main.async {
-                            self.pinPosition.coordinate = self.mapView.centerCoordinate
-                            self.mapView.setCenter(value.coordinate, zoomLevel: 10.0, animated: true)
+                            self.mapView.setCenter(coordinate: value.coordinate)
                             self.mapView.delegate = self
                         }
                         LocationServices.shared.isUserLocated = false
                     } else {
                         DispatchQueue.main.async {
-                            self.pinPosition.coordinate = self.mapView.centerCoordinate
                             self.mapView.delegate = self
                         }
                     }
@@ -90,6 +78,7 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
+    
     // MARK: Actions
     
     @IBAction func presentMenu(_ sender: Any) {
@@ -102,26 +91,14 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: MGLMapViewDelegate {
-
-    // Use the default marker. See also: our view annotation or custom marker examples.
-    func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
-        return nil
-    }
-
-    // Allow callout view to appear when an annotation is tapped.
-    func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
-        return true
-    }
+extension ViewController: MapViewDelegate {
     
-    func mapViewRegionIsChanging(_ mapView: MGLMapView) {
-        DispatchQueue.main.async {
-            self.pinPosition.coordinate = mapView.centerCoordinate
-        }
-    }
-    
-    func mapView(_ mapView: MGLMapView, regionDidChangeAnimated animated: Bool) {
-        print("REGION DID CHANGED")
+    func didChangedRegion(location: CLLocation) {
         LocationServices.shared.position.value = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
     }
+    
+    func isChangingRegion(location: CLLocation) {
+        self.view.endEditing(true)
+    }
+    
 }

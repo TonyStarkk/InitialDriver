@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxCocoa
 
 class AutoCompletionTableView: UITableView {
     
@@ -18,5 +19,9 @@ class AutoCompletionTableView: UITableView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func bindData(to address: [Address]) {
+        
     }
 }

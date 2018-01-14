@@ -95,6 +95,9 @@ extension LocationServices: CLLocationManagerDelegate {
             print("Not determined")
         default:
             print("User not allowed")
+            // TODO
+            // Add an alert to ask the user to activate the location
+            
             // position default to activate delegate method on mapView
             isAuthorized = false
             position.value = CLLocation()

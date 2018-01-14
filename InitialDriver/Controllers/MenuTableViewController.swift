@@ -18,12 +18,12 @@ class MenuViewController: UITableViewController {
         super.viewDidLoad()
         tableView.dataSource = nil
         tableView.delegate = nil
+        self.navigationController?.navigationBar.isHidden = true
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        
-        
         
         LocationServices.shared.arrPosition.asObservable()
             .bind(to: tableView.rx.items(cellIdentifier: "Cell", cellType: UITableViewCell.self)) { (row, element, cell) in
+                cell.textLabel?.numberOfLines = 0
                 cell.textLabel?.text = element.address
             }
             .disposed(by: disposeBag)
