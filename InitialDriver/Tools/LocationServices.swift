@@ -16,30 +16,14 @@ typealias JSONDictionary = [String:Any]
 public class LocationServices: NSObject  {
     
     static let shared = LocationServices()
-    var locManager = CLLocationManager()
     var position: Variable<CLLocation> = Variable(CLLocation())
     var address: Variable<String> = Variable(String())
     var arrPosition: Variable<[Address]> = Variable([])
-    var isUserLocated = false
-    var isAuthorized = false
-    let authStatus = CLLocationManager.authorizationStatus()
-    let inUse = CLAuthorizationStatus.authorizedWhenInUse
-    let always = CLAuthorizationStatus.authorizedAlways
+    var centerMap = false
+    let geoCoder = CLGeocoder()
     
+    // singleton pattern
     private override init() {}
-    
-    func start() {
-        if CLLocationManager.authorizationStatus() != .authorizedWhenInUse {
-            locManager.requestWhenInUseAuthorization()
-        } else {
-            locManager.startUpdatingLocation()
-        }
-        if CLLocationManager.locationServicesEnabled() {
-            locManager.delegate = self
-            locManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
-        }
-
-    }
     
     private func addPosition(address: String) {
         
@@ -54,84 +38,41 @@ public class LocationServices: NSObject  {
         }
     }
     
-    public func getAdress() {
-        if self.authStatus == inUse || self.authStatus == always {
-            let geoCoder = CLGeocoder()
-            self.address.value = "Loading.."
-            geoCoder.reverseGeocodeLocation(position.value) { placemarks, error in
-                if let e = error {
-                    print(e)
-                } else {
-                    let placeArray = placemarks
-                    var placeMark: CLPlacemark!
-                    placeMark = placeArray?[0]
-                    guard let addressDictionnary = placeMark.addressDictionary as? JSONDictionary,
-                        let street = addressDictionnary["Street"] as? String,
-                        let city = addressDictionnary["City"] as? String,
-                        let postalCode = placeMark.postalCode
-                       else {
-                        self.address.value = "Unamed Road"
-                        return
-                    }
-                    let address = "\(street) \(postalCode) \(city)"
-                    self.addPosition(address: address)
-                    self.address.value = address
+    public func getAdress(position: CLLocation) {
 
+        self.address.value = "Loading..."
+        geoCoder.reverseGeocodeLocation(position) { placemarks, error in
+            if let e = error {
+                print(e)
+            } else {
+                let placeArray = placemarks
+                var placeMark: CLPlacemark!
+                placeMark = placeArray?[0]
+                guard let addressDictionnary = placeMark.addressDictionary as? JSONDictionary,
+                    let street = addressDictionnary["Street"] as? String,
+                    let city = addressDictionnary["City"] as? String,
+                    let postalCode = placeMark.postalCode
+                   else {
+                    self.address.value = ""
+                    return
+                }
+                
+                let address = "\(street) \(postalCode) \(city)"
+                self.addPosition(address: address)
+                self.address.value = address
+                if (position.coordinate.longitude != self.position.value.coordinate.longitude
+                    || position.coordinate.latitude != self.position.value.coordinate.latitude) {
+                    self.position.value = position
                 }
             }
         }
     }
-}
-
-extension LocationServices: CLLocationManagerDelegate {
-    //this method will be called each time when a user change his location access preference.
-    public func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        switch status {
-        case .authorizedWhenInUse:
-            print("User allowed us to access location")
-            locManager.startUpdatingLocation()
-            break;
-        case .notDetermined:
-            print("Not determined")
-        default:
-            print("User not allowed")
-            // TODO
-            // Add an alert to ask the user to activate the location
-            
-            // position default to activate delegate method on mapView
-            isAuthorized = false
-            position.value = CLLocation()
-            break;
-        }
-        if status == .authorizedWhenInUse {
-
-            //do whatever init activities here.
+    
+    func    cancelGeoCode() {
+        if (geoCoder.isGeocoding == true) {
+            self.address.value = ""
+            geoCoder.cancelGeocode()
         }
     }
-    
-    //this method is called by the framework on locationManager.requestLocation();
-    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print("Did location updates is called")
-        guard let location = locations.last else {
-            print("error on Updated location")
-            return
-        }
-        print("\(location)")
-        if (LocationServices.shared.position.value != location && CLLocationCoordinate2DIsValid(location.coordinate) == true) {
-            print("did update location !!!")
-            isUserLocated = true
-            LocationServices.shared.position.value = location
-            manager.stopUpdatingLocation()
-            manager.delegate = nil
-        } else {
-            print("bad coordinate")
-        }
-
-    }
-    
-    public func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Did location updates is called but failed getting location \(error)")
-    }
-    
 }
 

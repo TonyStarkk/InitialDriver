@@ -18,11 +18,12 @@ class MenuViewController: UITableViewController {
         super.viewDidLoad()
         tableView.dataSource = nil
         tableView.delegate = nil
-        self.navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = true
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        
+        tableView.rowHeight = UITableViewAutomaticDimension
         LocationServices.shared.arrPosition.asObservable()
             .bind(to: tableView.rx.items(cellIdentifier: "Cell", cellType: UITableViewCell.self)) { (row, element, cell) in
+                
                 cell.textLabel?.numberOfLines = 0
                 cell.textLabel?.text = element.address
             }
@@ -32,17 +33,10 @@ class MenuViewController: UITableViewController {
             .modelSelected(Address.self)
             .subscribe(onNext:  { value in
                 self.dismiss(animated: true, completion: {
-                    LocationServices.shared.isUserLocated = true
+                    LocationServices.shared.centerMap = true
                     LocationServices.shared.position.value = value.position
                 })
             })
             .disposed(by: disposeBag)
-        
-        tableView.rx
-            .itemAccessoryButtonTapped
-            .subscribe(onNext: { indexPath in
-                print("Tapped Detail @ \(indexPath.section),\(indexPath.row)")
-            })
-            .disposed(by: disposeBag)
-    }
+            }
 }
