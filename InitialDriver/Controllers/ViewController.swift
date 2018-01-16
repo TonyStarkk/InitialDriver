@@ -171,6 +171,7 @@ extension ViewController: MapViewDelegate {
              || (n_lon != o_lon)) {
 //            print("new lat : \(n_lat) lon : \(n_lon)")
 //            print("old lat : \(o_lat) lon : \(o_lon)")
+
             LocationServices.shared.position.value = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
         }
     }
