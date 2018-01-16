@@ -12,6 +12,7 @@ target 'InitialDriver' do
   pod 'SwiftyUserDefaults'
   pod 'Alamofire', '~> 4.4'
   pod 'SideMenu'
+  pod 'MapboxGeocoder.swift', '~> 0.7'
 
   target 'InitialDriverTests' do
     inherit! :search_paths

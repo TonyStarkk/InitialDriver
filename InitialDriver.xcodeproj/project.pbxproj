@@ -103,6 +103,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6642D281200E9B8A00691CF3 /* Maps */ = {
+			isa = PBXGroup;
+			children = (
+				6642E953200411E100DDE9FE /* MapView.swift */,
+				6642D27F200A7DC900691CF3 /* MapViewBox.swift */,
+			);
+			path = Maps;
+			sourceTree = "<group>";
+		};
 		6642E915200409A400DDE9FE = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +142,7 @@
 				6642E95520055D8500DDE9FE /* Model */,
 				6642E95020040B8200DDE9FE /* Views */,
 				6642E94F20040B7400DDE9FE /* Extensions */,
+				6642D281200E9B8A00691CF3 /* Maps */,
 				6642E95220040BF900DDE9FE /* Tools */,
 				6642E928200409A400DDE9FE /* Assets.xcassets */,
 				6642E92A200409A400DDE9FE /* LaunchScreen.storyboard */,
@@ -188,9 +198,7 @@
 		6642E95220040BF900DDE9FE /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				6642E953200411E100DDE9FE /* MapView.swift */,
 				6642E958200571E800DDE9FE /* LocationServices.swift */,
-				6642D27F200A7DC900691CF3 /* MapViewBox.swift */,
 			);
 			path = Tools;
 			sourceTree = "<group>";
@@ -438,6 +446,7 @@
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
 				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework.dSYM",
+				"${BUILT_PRODUCTS_DIR}/MapboxGeocoder.swift/MapboxGeocoder.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SideMenu/SideMenu.framework",
@@ -448,6 +457,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
 				"${DWARF_DSYM_FOLDER_PATH}/Mapbox.framework.dSYM",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxGeocoder.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SideMenu.framework",

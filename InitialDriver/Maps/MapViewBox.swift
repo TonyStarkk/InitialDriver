@@ -28,6 +28,8 @@ class MapViewBox: MapView {
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         super.init(frame: frame)
         mapView.delegate = self
+        mapView.showsUserLocation = true
+
         self.addSubview(mapView)
     }
     
@@ -35,8 +37,8 @@ class MapViewBox: MapView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func setCenter(coordinate: CLLocationCoordinate2D) {
-        self.mapView.setCenter(coordinate, zoomLevel: 15.0, animated: true)
+    override func setCenter(coordinate: CLLocationCoordinate2D, animated: Bool) {
+        self.mapView.setCenter(coordinate, zoomLevel: 15.0, animated: animated)
     }
 }
 
@@ -50,6 +52,10 @@ extension MapViewBox: MGLMapViewDelegate {
     // Allow callout view to appear when an annotation is tapped.
     func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
         return true
+    }
+    
+    func mapView(_ mapView: MGLMapView, didUpdate userLocation: MGLUserLocation?) {
+        super.didFindUserLocation(userCoordinate: userLocation?.coordinate)
     }
     
     func mapViewRegionIsChanging(_ mapView: MGLMapView) {

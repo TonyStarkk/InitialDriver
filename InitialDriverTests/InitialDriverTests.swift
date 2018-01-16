@@ -7,9 +7,13 @@
 //
 
 import XCTest
+import CoreLocation
+
 @testable import InitialDriver
 
 class InitialDriverTests: XCTestCase {
+    
+
     
     override func setUp() {
         super.setUp()
@@ -21,9 +25,16 @@ class InitialDriverTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
+    func testAddressInitialisation() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        let superAddress = "Super Adresse"
+        let position = CLLocation(latitude: 4.0, longitude: 5.0)
+        let address: Address = Address(position: position, address: superAddress)
+        
+        XCTAssertTrue(superAddress == address.address
+            && position.coordinate.latitude == address.position.coordinate.latitude
+            && position.coordinate.longitude == address.position.coordinate.longitude)
     }
     
     func testPerformanceExample() {

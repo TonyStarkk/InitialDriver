@@ -42,26 +42,36 @@
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="15"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="search"/>
                             </textField>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="NAV-He-HJt">
                                 <rect key="frame" x="171.5" y="327.5" width="32" height="32"/>
                             </imageView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="AkK-va-dnH" customClass="AutoCompletionTableView" customModule="InitialDriver" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="91" width="375" height="576"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="AkK-va-dnH" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="3Ar-Xj-RmW"/>
                             <constraint firstItem="NAV-He-HJt" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="CZs-mA-Fur"/>
                             <constraint firstItem="b3M-pK-qaz" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="EO6-bf-iXR"/>
                             <constraint firstItem="J6x-95-IKE" firstAttribute="centerY" secondItem="b3M-pK-qaz" secondAttribute="centerY" id="Y8m-Ck-tHc"/>
+                            <constraint firstItem="AkK-va-dnH" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="bOy-DN-vXz"/>
+                            <constraint firstItem="AkK-va-dnH" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="fRx-5u-4pl"/>
                             <constraint firstItem="b3M-pK-qaz" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="fl6-IY-ZdR"/>
                             <constraint firstItem="J6x-95-IKE" firstAttribute="leading" secondItem="b3M-pK-qaz" secondAttribute="trailing" constant="8" id="knS-qc-h55"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="J6x-95-IKE" secondAttribute="trailing" constant="16" id="sy0-KC-0Bk"/>
                             <constraint firstItem="NAV-He-HJt" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="vs0-pI-Jqv"/>
+                            <constraint firstItem="AkK-va-dnH" firstAttribute="top" secondItem="J6x-95-IKE" secondAttribute="bottom" constant="21" id="ys4-IT-T6s"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="addressTF" destination="J6x-95-IKE" id="yeA-wW-NAr"/>
+                        <outlet property="autoCompletionTV" destination="AkK-va-dnH" id="hJ6-ES-plb"/>
+                        <outlet property="menuBT" destination="b3M-pK-qaz" id="fCm-Y5-od9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
