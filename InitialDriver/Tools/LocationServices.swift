@@ -25,7 +25,7 @@ public class LocationServices: NSObject  {
     // singleton pattern
     private override init() {}
     
-    private func addPosition(address: String) {
+    public func addPosition(address: String) {
         
         let results = arrPosition.value.filter { $0.address == address }
         if (results.isEmpty == true) {

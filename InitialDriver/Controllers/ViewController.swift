@@ -99,7 +99,7 @@ class ViewController: UIViewController {
                     if (self.mapView.centerCoordinate.latitude != value.coordinate.latitude
                         || self.mapView.centerCoordinate.longitude != value.coordinate.longitude) {
                     DispatchQueue.main.async {
-                            self.mapView.setCenter(coordinate: value.coordinate, animated: false)
+                            self.mapView.setCenter(coordinate: value.coordinate, animated: true)
                         }
                     }
                 } else {

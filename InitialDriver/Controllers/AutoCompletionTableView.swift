@@ -70,6 +70,7 @@ class AutoCompletionTableView: UITableView {
                 LocationServices.shared.centerMap = true
                 LocationServices.shared.address.value = value.address
                 LocationServices.shared.position.value = value.position
+                LocationServices.shared.addPosition(address: value.address)
             })
             .disposed(by: disposeBag)
     }
